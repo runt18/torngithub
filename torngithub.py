@@ -97,14 +97,14 @@ class GithubMixin(OAuth2Mixin):
                          future, fields, response):
         if response.error:
             future.set_exception(
-                AuthError("Github auth error: %s" % str(response)))
+                AuthError("Github auth error: {0!s}".format(str(response))))
             return
 
         args = parse_qs_bytes(native_str(response.body))
 
         if "error" in args:
             future.set_exception(
-                AuthError("Github auth error: %s" % args["error"][-1]))
+                AuthError("Github auth error: {0!s}".format(args["error"][-1])))
             return
 
         session = {
@@ -185,8 +185,7 @@ def _on_github_request(future, response):
     if response.error:
         print response.error
         future.set_exception(
-            AuthError("Error response %s fetching %s" %
-                      (response.error, response.request.url)))
+            AuthError("Error response {0!s} fetching {1!s}".format(response.error, response.request.url)))
         return
 
     result = ObjectDict(code=response.code, headers=response.headers, body=None)
